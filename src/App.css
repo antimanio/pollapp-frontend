@@ -40,3 +40,82 @@
 .read-the-docs {
   color: #888;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.loginForm {
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.loginForm input[type=text],input[type=password] {
+  padding: 10px;
+  width: 200px;
+  height: 30px;
+}
+
+.loginForm input[type=button] {
+  margin-top: 10px;
+  font-size: 18px;
+  padding: 10px;
+  width: 224px;
+  height: 40px;
+}
+
+
+
+.responseBody, .pollOptions {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.responseBody .response {
+  display: flex;
+  flex-direction: row;
+  width: 500px;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 15px;
+  border-top: 1px solid white;
+}
+
+.responseBody .response:hover {
+  background-color: #313131;
+}
+
+.responseBody .response input[type=button] {
+  width: 60px;
+  margin: 0;
+}
+
+.back {
+  width: 500px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.pollOptions .option {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 15px;
+  border-top: 1px solid white;
+}
+
+.pollOptions {
+  border: 1px solid white;
+}
+
+.pollQuestion {
+  width: 500px;
+}
