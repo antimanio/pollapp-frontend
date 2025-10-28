@@ -1,7 +1,10 @@
 import { useRef } from 'react'
+import {useState} from "react";
+import CreatePoll from './createpoll.tsx';
 
 function Main() {
-  const pollIdRef = useRef(null); 
+  const pollIdRef = useRef(null);
+  const [createPollState, setCreatePollState] = useState(false);
 
   const joinPoll = () => {
     const pollId = pollIdRef?.current?.value;
@@ -9,8 +12,12 @@ function Main() {
   }
 
   const createPoll = () => {
-    // Go to createPoll page logic
+    setCreatePollState(true);
   }
+
+    if(createPollState) {
+        return <CreatePoll setCreatePollState = {setCreatePollState}/>
+    }
 
   return (
     <>

@@ -1,12 +1,12 @@
 import { useRef } from 'react'
 
-function CreatePoll() {
+function CreatePoll({setCreatePollState}) {
   const createPoll = () => {
 
   }
   
   const back = () => {
-    // Go back to main page logic
+    setCreatePollState(false)
   }
 
   return (
