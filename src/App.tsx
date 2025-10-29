@@ -5,10 +5,9 @@ import './App.css'
 import Login from './components/login'
 import Main from './components/main'
 import { jwtDecode } from 'jwt-decode'
-import useSessionStorageState from 'use-session-storage-state'
 
 function App() {
-  const [token, setToken] = useSessionStorageState("token", { defaultValue: null});
+  const [token, setToken] = useState(null)
 
   return (
     <>
