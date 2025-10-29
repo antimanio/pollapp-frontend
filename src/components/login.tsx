@@ -3,31 +3,40 @@ import Register from './register.tsx'
 import {useState} from "react";
 import Main from './main'
 
-function Login() {
+function Login({setToken}) {
   const usernameRef = useRef(null); 
   const passwordRef = useRef(null);
   const [registerState, setRegisterState] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   
   const login = () => {
     const username = usernameRef?.current?.value;
     const password = passwordRef?.current?.value;
+
+    fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        username,
+        password
+      }),
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log("estt" + data);
+      setToken(data);
+      //if(data["id"] != null) setToken(data);
+    })
+    .catch(error => console.error('Error:', error));
   }
 
   const goToRegister = () => {
       setRegisterState(!registerState);
   }
 
-  const goToMain = () => {
-        setLoggedIn(!loggedIn);
-  }
-
   if(registerState) {
-      return <Register/>
-  }
-
-  if (loggedIn) {
-        return <Main/>
+      return <Register setRegisterState={setRegisterState}/>
   }
 
 
@@ -37,7 +46,7 @@ function Login() {
             <h2>Login</h2>
             <input type="text" ref={usernameRef} placeholder='Username'/>
             <input type="password" ref={passwordRef} placeholder='Password'/>
-            <input type="button" onClick={goToMain} value="Login"/>
+            <input type="button" onClick={login} value="Login"/>
             <h4 className='clickable' onClick={goToRegister}>Register</h4>
         </div>
     </>

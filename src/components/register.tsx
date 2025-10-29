@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 
 
-function Register() {
+function Register({setRegisterState}) {
   const [error,setError] = useState("");
   const usernameRef = useRef(null); 
   const emailRef = useRef(null); 
@@ -22,6 +22,22 @@ function Register() {
     if(password != passwordRepeat) return setError("Your passwords does not match");
 
     //Register logic
+    fetch("http://localhost:8080/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        username,
+        email,
+        password
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data["id"] != null) setRegisterState(false);
+    })
+    .catch(error => console.error('Error:', error));
   }
 
   return (

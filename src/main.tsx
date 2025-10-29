@@ -7,6 +7,6 @@ import Login from './components/login.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-      <Login/>
+      <App/>
   </StrictMode>,
 )

@@ -1,8 +1,9 @@
 import { useRef } from 'react'
 import {useState} from "react";
 import CreatePoll from './createpoll.tsx';
+import { getUsername } from './util.tsx';
 
-function Main() {
+function Main({token}) {
   const pollIdRef = useRef(null);
   const [createPollState, setCreatePollState] = useState(false);
 
@@ -22,7 +23,7 @@ function Main() {
   return (
     <>
         <div className='loginForm'>
-            <h2>Welcome, username</h2>
+            <h2>Welcome, {getUsername(token)}</h2>
             <input type="text" ref={pollIdRef} placeholder='Poll Id'/>
             <input type="button" onClick={joinPoll} value="Join Poll"/>
             <input type="button" onClick={createPoll} value="Create Poll"/>
