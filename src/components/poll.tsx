@@ -2,7 +2,7 @@ import { useRef } from 'react'
 
 function Poll() {
   const vote = () => {
-
+      // Vote logic
   }
   
   const back = () => {

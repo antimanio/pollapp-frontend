@@ -1,20 +1,23 @@
 import { useRef, useState } from 'react'
 
+interface RegisterProps {
+    setRegisterState?: (v: boolean) => void;
+}
 
-function Register({setRegisterState}) {
+function Register({setRegisterState} : RegisterProps) {
   const [error,setError] = useState("");
-  const usernameRef = useRef(null); 
-  const emailRef = useRef(null); 
-  const passwordRef = useRef(null); 
-  const passwordRepeatRef = useRef(null); 
+    const usernameRef = useRef<HTMLInputElement | null>(null);
+    const emailRef = useRef<HTMLInputElement | null>(null);
+    const passwordRef = useRef<HTMLInputElement | null>(null);
+    const passwordRepeatRef = useRef<HTMLInputElement | null>(null);
 
   const register = () => {
     setError("");
 
-    const username = usernameRef?.current?.value;
-    const email = emailRef?.current?.value;
-    const password = passwordRef?.current?.value;
-    const passwordRepeat = passwordRepeatRef?.current?.value;
+      const username = usernameRef.current?.value ?? "";
+      const email = emailRef.current?.value ?? "";
+      const password = passwordRef.current?.value ?? "";
+      const passwordRepeat = passwordRepeatRef.current?.value ?? "";
 
     if(username.length < 1) return setError("You have to have a username");
     if(email.length < 1) return setError("You have to have a email");
@@ -26,6 +29,7 @@ function Register({setRegisterState}) {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
+          "Access-Control-Allow-Origin": "*"
       },
       body: new URLSearchParams({
         username,
@@ -35,7 +39,7 @@ function Register({setRegisterState}) {
     })
     .then(response => response.json())
     .then(data => {
-      if(data["id"] != null) setRegisterState(false);
+      if (data['id'] != null) setRegisterState(false);
     })
     .catch(error => console.error('Error:', error));
   }
