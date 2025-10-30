@@ -7,26 +7,24 @@ import { jwtDecode } from 'jwt-decode'
 import { useCookies } from 'react-cookie'
 
 function App() {
-
-
-
     //const [token, setToken] = useSessionStorageState("token", { defaultValue: null});
-    const [token, setToken] = useState(null);
+  const [token, setToken] = useState(null);
 
-    const [cookies, setCookie, removeCookie] = useCookies(['auth']);
+  const [cookies, setCookie, removeCookie] = useCookies(['auth']);
 
-    useEffect(() => {
-        if(token != cookies?.auth && cookies?.auth != null && token == null) setToken(cookies?.auth);
-    },[cookies]);
+  useEffect(() => {
+    if(token != cookies?.auth && cookies?.auth != null && token == null) setToken(cookies?.auth);
+  },[cookies]);
 
-    useEffect(() => {
-        if(token != null) {
-            if(token != cookies?.auth) setCookie("auth", token);
-            if(cookies?.auth != null && token != cookies?.auth) {
-                setToken(cookies?.auth)
-            }
-        }
-    },[token]);
+  useEffect(() => {
+    if(token != null) {
+      if(token != cookies?.auth) setCookie("auth", token);
+      if(cookies?.auth != null && token != cookies?.auth) {
+        setToken(cookies?.auth)
+      }
+    }
+  },[token]);
+
   return (
     <>
     {token !== null ?
