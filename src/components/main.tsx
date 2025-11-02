@@ -2,6 +2,8 @@ import { useRef } from 'react'
 import {useState} from "react";
 import CreatePoll from './createpoll.tsx';
 import { getUsername } from './util.tsx';
+import Poll from './poll.tsx';
+import useSessionStorageState from 'use-session-storage-state'
 
 interface MainProps {
     token?: string | null;
@@ -11,6 +13,7 @@ interface MainProps {
 function Main({token, setToken}: MainProps) {
   const pollIdRef = useRef<HTMLInputElement | null>(null);
   const [createPollState, setCreatePollState] = useState(false);
+  const [poll, setPoll] = useSessionStorageState("poll", {defaultValue: null});
 
 
     function clearToken(setToken: (t: string | null) => void) {
@@ -23,15 +26,37 @@ function Main({token, setToken}: MainProps) {
   const joinPoll = () => {
     const pollId = pollIdRef?.current?.value;
     console.log(pollId)
+    fetch("http://localhost:8080/polls", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(pollId) {
+            const pollData = data.find(p => p.id == pollId);
+            if(pollData) setPoll(pollData);
+          }
+        })
+        .catch(err => {
+            console.error('Error:', err);
+        });
+    
   }
 
   const createPoll = () => {
     setCreatePollState(true);
   }
 
-    if(createPollState) {
-        return <CreatePoll setCreatePollState = {setCreatePollState} token = {token ?? undefined}/>
-    }
+  if(poll) {
+    return <Poll Poll={poll} setPoll={setPoll} token={token}></Poll>
+  }
+
+
+  if(createPollState) {
+      return <CreatePoll setCreatePollState = {setCreatePollState} setPoll={setPoll} token = {token ?? undefined}/>
+  }
 
   return (
     <>

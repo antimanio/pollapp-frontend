@@ -1,12 +1,13 @@
-import {useState} from "react";
+import {useState, type SetStateAction} from "react";
 import {getUsername} from './util.tsx';
 
 interface CreatePollProps {
     setCreatePollState: (state: boolean) => void;
     token?: string;
+    setPoll: (state: Object) => void;
 }
 
-function CreatePoll({setCreatePollState, token} : CreatePollProps) {
+function CreatePoll({setCreatePollState, token, setPoll} : CreatePollProps) {
 
     const username = token ? getUsername(token) : "";
 
@@ -58,6 +59,9 @@ function CreatePoll({setCreatePollState, token} : CreatePollProps) {
             }
             const result = await response.json().catch(() => null);
             console.log("Created poll:", result);
+            setCreatePollState(false);
+            setPoll(result)
+
         } catch (err: any) {
             console.error("Failed to create poll", err?.message ?? err);
         }

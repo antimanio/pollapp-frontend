@@ -19,9 +19,6 @@ function App() {
   useEffect(() => {
     if(token != null) {
       if(token != cookies?.auth) setCookie("auth", token);
-      if(cookies?.auth != null && token != cookies?.auth) {
-        setToken(cookies?.auth)
-      }
     }
   },[token]);
 
