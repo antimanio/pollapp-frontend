@@ -1,6 +1,6 @@
 import {jwtDecode} from "jwt-decode";
 
-export const getUsername = (token: string | null): string | undefined => {
+export const getUsername = (token: string) => {
     if(!token) return undefined
 
     const raw = token.trim();
@@ -29,5 +29,24 @@ export const getUsername = (token: string | null): string | undefined => {
         console.error("Failed to get username");
         return undefined;
     }
+}
 
+export interface Vote {
+  id: number;
+  publishedAt: string;
+}
+
+export interface VoteOption {
+  id: number;
+  caption: string;
+  presentationOrder: number;
+  vote: Vote[];
+}
+
+export interface Poll {
+  id: number;
+  question: string;
+  publishedAt: string;
+  validUntil: string;
+  voteoption: VoteOption[];
 }

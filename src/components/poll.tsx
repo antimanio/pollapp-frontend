@@ -1,9 +1,14 @@
-import { useRef } from 'react'
-import { getUsername } from './util';
+import { getUsername, type Poll } from './util';
 
-function Poll({Poll, token, setPoll}) {
+type PollVoteProps = {
+  poll: Poll;
+  token: string;
+  setPoll: React.Dispatch<React.SetStateAction<Poll | null>>;
+};
+
+function PollVote({poll, token, setPoll}: PollVoteProps) {
     const username = getUsername(token) ?? "test";
-    const pollquestion = Poll.question;
+    const pollquestion = poll?.question;
 
     const updateVote = () => {
         fetch("http://localhost:8080/polls", {
@@ -14,7 +19,7 @@ function Poll({Poll, token, setPoll}) {
         })
         .then(response => response.json())
         .then(data => {
-            const updateData = data.find(p => p.id == Poll.id);
+            const updateData = data.find((p: Poll) => p.id == poll.id);
             setPoll(updateData)
         })
         .catch(err => {
@@ -22,7 +27,7 @@ function Poll({Poll, token, setPoll}) {
         });
     }
 
-    const vote = (optionindex) => {
+    const vote = (optionindex: string) => {
         // Vote logic
         console.log(username, pollquestion, optionindex)
         fetch("http://localhost:8080/votes", {
@@ -37,7 +42,7 @@ function Poll({Poll, token, setPoll}) {
             }),
         })
         .then(response => response.text())
-        .then(data => {
+        .then(() => {
             updateVote()
         })
         .catch(err => {
@@ -56,14 +61,14 @@ function Poll({Poll, token, setPoll}) {
             <div className='back'>
                 <h4 className='clickable' onClick={back}>← Back</h4>
             </div>
-            <h2>Poll #{Poll.id}</h2>
-            <h2 className='pollQuestion'>{Poll.question}</h2>
+            <h2>Poll #{poll.id}</h2>
+            <h2 className='pollQuestion'>{poll.question}</h2>
             <div className='responseBody'>
-                {Poll.voteoption.map((opt, idx) => (
+                {poll.voteoption.map((opt, idx) => (
                     <div key={idx} className='response clickable' title="Click me to vote for this option">
                         <div className='statement'>{opt.caption}</div>
                         <div className='statement'>Votes: {opt.vote.length}</div>
-                        <input type="button" onClick={() => vote(idx)} value="Vote"/>
+                        <input type="button" onClick={() => vote(String(idx))} value="Vote"/>
                     </div>
                 ))}
             </div>
@@ -72,4 +77,4 @@ function Poll({Poll, token, setPoll}) {
   )
 }
 
-export default Poll
+export default PollVote

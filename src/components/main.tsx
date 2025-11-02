@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 import {useState} from "react";
 import CreatePoll from './createpoll.tsx';
-import { getUsername } from './util.tsx';
-import Poll from './poll.tsx';
+import { getUsername, type Poll } from './util.tsx';
+import PollVote from './poll.tsx';
 import useSessionStorageState from 'use-session-storage-state'
 
 interface MainProps {
@@ -13,7 +13,7 @@ interface MainProps {
 function Main({token, setToken}: MainProps) {
   const pollIdRef = useRef<HTMLInputElement | null>(null);
   const [createPollState, setCreatePollState] = useState(false);
-  const [poll, setPoll] = useSessionStorageState("poll", {defaultValue: null});
+  const [poll, setPoll] = useSessionStorageState<Poll | null>("poll", {defaultValue: null,});
 
 
     function clearToken(setToken: (t: string | null) => void) {
@@ -21,7 +21,7 @@ function Main({token, setToken}: MainProps) {
         sessionStorage.removeItem('token'); // remove from raw sessionStorage as well
     }
 
-    const logout = () => clearToken(setToken);
+    const logout = () => {if(setToken) clearToken(setToken);}
 
   const joinPoll = () => {
     const pollId = pollIdRef?.current?.value;
@@ -35,7 +35,7 @@ function Main({token, setToken}: MainProps) {
         .then(response => response.json())
         .then(data => {
           if(pollId) {
-            const pollData = data.find(p => p.id == pollId);
+            const pollData = data.find((p: Poll) => String(p.id) == pollId);
             if(pollData) setPoll(pollData);
           }
         })
@@ -50,7 +50,7 @@ function Main({token, setToken}: MainProps) {
   }
 
   if(poll) {
-    return <Poll Poll={poll} setPoll={setPoll} token={token}></Poll>
+    return <PollVote poll={poll} setPoll={setPoll} token={token ?? ""}></PollVote>
   }
 
 
@@ -62,7 +62,7 @@ function Main({token, setToken}: MainProps) {
     <>
         <input type="button" value="Logout" onClick={logout} />
         <div className='loginForm'>
-            <h2>Welcome, {getUsername(token) ?? "Guest"}</h2>
+            <h2>Welcome, {getUsername(token ?? "") ?? "Guest"}</h2>
             <input type="text" ref={pollIdRef} placeholder='Poll Id'/>
             <input type="button" onClick={joinPoll} value="Join Poll"/>
             <input type="button" onClick={createPoll} value="Create Poll"/>

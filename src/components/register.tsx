@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 
 interface RegisterProps {
-    setRegisterState?: (v: boolean) => void;
+    setRegisterState: (v: boolean) => void;
 }
 
 function Register({setRegisterState} : RegisterProps) {

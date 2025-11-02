@@ -1,10 +1,11 @@
-import {useState, type SetStateAction} from "react";
-import {getUsername} from './util.tsx';
+import {useState} from "react";
+import {getUsername, type Poll} from './util.tsx';
+import type { Dispatch, SetStateAction } from "react";
 
 interface CreatePollProps {
     setCreatePollState: (state: boolean) => void;
     token?: string;
-    setPoll: (state: Object) => void;
+    setPoll: Dispatch<SetStateAction<Poll | null>>;
 }
 
 function CreatePoll({setCreatePollState, token, setPoll} : CreatePollProps) {
