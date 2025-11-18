@@ -9,7 +9,7 @@ function App() {
     //const [token, setToken] = useSessionStorageState("token", { defaultValue: null});
   const [token, setToken] = useState<string|null>(null);
 
-  const [cookies, setCookie/*, removeCookie*/] = useCookies(['auth']);
+  const [cookies, setCookie, removeCookie] = useCookies<string>(['auth']);
 
   useEffect(() => {
     if(token != cookies?.auth && cookies?.auth != null && token == null) setToken(cookies?.auth);
@@ -24,7 +24,7 @@ function App() {
   return (
     <>
     {token !== null ?
-      <Main token={token} setToken={setToken}/>
+      <Main token={token} setToken={setToken} removeCookie={removeCookie}/>
     : 
       <Login setToken={setToken}/>
     }

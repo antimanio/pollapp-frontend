@@ -8,9 +8,10 @@ import useSessionStorageState from 'use-session-storage-state'
 interface MainProps {
     token?: string | null;
     setToken?: (t: string | null) => void;
+    removeCookie?: (t: string) => void;
 }
 
-function Main({token, setToken}: MainProps) {
+function Main({token, setToken, removeCookie}: MainProps) {
   const pollIdRef = useRef<HTMLInputElement | null>(null);
   const [createPollState, setCreatePollState] = useState(false);
   const [poll, setPoll] = useSessionStorageState<Poll | null>("poll", {defaultValue: null,});
@@ -18,7 +19,7 @@ function Main({token, setToken}: MainProps) {
 
     function clearToken(setToken: (t: string | null) => void) {
         setToken(null);                   // clears React/session-storage state
-        sessionStorage.removeItem('token'); // remove from raw sessionStorage as well
+        if(removeCookie) removeCookie("auth");
     }
 
     const logout = () => {if(setToken) clearToken(setToken);}
